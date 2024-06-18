@@ -5,10 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -50,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addPaciente(String nome, String telefone, int idade, String regiao, String sintomas, int possuiDengue) {
+    public void addPaciente(String nome, String telefone, int idade, String regiao, String sintomas) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOME, nome);
@@ -58,49 +54,97 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_IDADE, idade);
         values.put(COLUMN_REGIAO, regiao);
         values.put(COLUMN_SINTOMAS, sintomas);
-        values.put(COLUMN_POSSUI_DENGUE, possuiDengue);
+        values.put(COLUMN_POSSUI_DENGUE, 0); // Inicialmente 0, indicando que não possui dengue
 
         db.insert(TABLE_PACIENTES, null, values);
         db.close();
     }
 
-    public int contarPacientesComDengue() {
+    public void verificarEDefinirDengue(String nome) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT COUNT(*) FROM " + TABLE_PACIENTES +
-                " WHERE " + COLUMN_POSSUI_DENGUE + " = 1";
+        String query = "SELECT " + COLUMN_SINTOMAS + " FROM " + TABLE_PACIENTES +
+                " WHERE " + COLUMN_NOME + " = ?";
 
-        Cursor cursor = db.rawQuery(query, null);
-        int count = 0;
+        Cursor cursor = db.rawQuery(query, new String[]{nome});
 
         if (cursor != null && cursor.moveToFirst()) {
-            count = cursor.getInt(0);
-            cursor.close();
-        }
+            String sintomas = cursor.getString(0);
 
-        db.close();
-        return count;
-    }
+            if (possuiSintomasDeDengue(sintomas)) {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_POSSUI_DENGUE, 1);
 
-    public Map<String, Integer> contarPacientesComDenguePorRegiao() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Map<String, Integer> pacientesPorRegiao = new HashMap<>();
-
-        String query = "SELECT " + COLUMN_REGIAO + ", COUNT(*) FROM " + TABLE_PACIENTES +
-                " WHERE " + COLUMN_POSSUI_DENGUE + " = 1" +
-                " GROUP BY " + COLUMN_REGIAO;
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String regiao = cursor.getString(0);
-                int count = cursor.getInt(1);
-                pacientesPorRegiao.put(regiao, count);
+                db.update(TABLE_PACIENTES, values, COLUMN_NOME + " = ?", new String[]{nome});
             }
             cursor.close();
         }
 
         db.close();
-        return pacientesPorRegiao;
     }
+
+    private boolean possuiSintomasDeDengue(String sintomas) {
+        // Lista de sintomas que indicam dengue
+        String[] sintomasDengue = {"febre", "dor de cabeça", "dor nas articulações", "náusea", "vômito"};
+
+        int count = 0;
+        for (String sintoma : sintomasDengue) {
+            if (sintomas.toLowerCase().contains(sintoma)) {
+                count++;
+            }
+        }
+        return count >= 2;
+    }
+
+    public boolean verificarPacientePossuiDengue(String nome) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_POSSUI_DENGUE + " FROM " + TABLE_PACIENTES +
+                " WHERE " + COLUMN_NOME + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{nome});
+        boolean possuiDengue = false;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            possuiDengue = cursor.getInt(0) == 1;
+            cursor.close();
+        }
+
+        db.close();
+        return possuiDengue;
+    }
+
+    public Cursor getAllPacientes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PACIENTES, null);
+    }
+
+    public String getPacientesPorRegiao() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        StringBuilder resultado = new StringBuilder();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_REGIAO + ", COUNT(*) as total FROM " + TABLE_PACIENTES + " GROUP BY " + COLUMN_REGIAO, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String regiao = cursor.getString(cursor.getColumnIndex(COLUMN_REGIAO));
+                int total = cursor.getInt(cursor.getColumnIndex("total"));
+                resultado.append("Região: ").append(regiao).append(" - Total de Pacientes: ").append(total).append("\n");
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return resultado.toString();
+    }
+
+    public int getTotalPacientesComDengue() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PACIENTES + " WHERE " + COLUMN_POSSUI_DENGUE + " = 1", null);
+        int total = 0;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+            cursor.close();
+        }
+
+        return total;
+    }
+
 }

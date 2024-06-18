@@ -5,32 +5,48 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <!-- TextView principal -->
+    <!-- Imagem acima dos botões -->
 
-    <!-- TextView que será posicionado relativamente ao helloWorldTextView -->
-
-    <TextView
-        android:id="@+id/helloWorldTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World! pedro paulo ferreira barros"
+    <!-- Botão Adicionar Paciente -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="368dp"
+        android:layout_height="241dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.803"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/btnAdicionarPaciente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/_202410637"
-        app:layout_constraintTop_toBottomOf="@+id/helloWorldTextView"
-        app:layout_constraintStart_toStartOf="@+id/helloWorldTextView"
-        app:layout_constraintEnd_toEndOf="@+id/helloWorldTextView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.1"
-        />
+        android:text="Adicionar Paciente"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Botão Ver Pacientes -->
+    <Button
+        android:id="@+id/btnVerPacientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver Pacientes"
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Guideline para centralizar verticalmente os botões -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

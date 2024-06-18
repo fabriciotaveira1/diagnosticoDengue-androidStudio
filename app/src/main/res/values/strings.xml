@@ -1,4 +1,27 @@
 <resources>
     <string name="app_name">DengueMobile</string>
     <string name="_202410637">202410637</string>
+    <string name="adicionar_pacientes">ADICIONAR PACIENTES</string>
+    <string name="nome">Nome</string>
+    <string name="telefone">Telefone</string>
+    <string name="idade">Idade</string>
+    <string name="regi_o">Região</string>
+    <string name="adicionar_sintoma">Adicionar Sintoma</string>
+    <string name="sintomas_adicionados">Sintomas Adicionados</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="voltar">Voltar</string>
+    <string name="resultados">RESULTADOS</string>
+    <string name="total_de_pacientes_por_regi_o">Total de Pacientes Por Região</string>
+    <string name="total_de_pacientes_com_dengue">Total de Pacientes com Dengue</string>
+    <string name="prompt_selecione_sintomas">Selecione os sintomas</string>
+    <string-array name="sintomas_array">
+        <item>Febre</item>
+        <item>Dor de cabeça</item>
+        <item>Dor nas articulações</item>
+        <item>Náusea</item>
+        <item>Vômito</item>
+        <item>Erupção cutânea</item>
+        <item>Dor atrás dos olhos</item>
+        <item>Fadiga</item>
+    </string-array>
 </resources>

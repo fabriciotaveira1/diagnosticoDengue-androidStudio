@@ -3,12 +3,12 @@ package com.example.denguemobile;
 public class Paciente {
     private final int numero;
     private final String nome;
-    private final int telefone;
-    private final int idade;
+    private final String telefone; // Alterado para String
+    private final int idade; // Alterado para int
     private final String regiao;
-    private final String sintomas.
+    private final String sintomas; // Adicionado ponto e vírgula aqui
 
-    public Paciente(int numero, String nome, int telefone,int idade, String regiao, String sintomas){
+    public Paciente(int numero, String nome, String telefone, int idade, String regiao, String sintomas) {
         this.numero = numero;
         this.nome = nome;
         this.telefone = telefone;
@@ -25,15 +25,15 @@ public class Paciente {
         return nome;
     }
 
-    public int getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
-    public int getIdade(){
+    public int getIdade() {
         return idade;
     }
 
-    public String getRegiao(){
+    public String getRegiao() {
         return regiao;
     }
 
