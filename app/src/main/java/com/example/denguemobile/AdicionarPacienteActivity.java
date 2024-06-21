@@ -99,7 +99,7 @@ public class AdicionarPacienteActivity extends AppCompatActivity {
         String nome = editNome.getText().toString();
 
         boolean possuiDengue = dbHelper.verificarPacientePossuiDengue(nome);
-        String diagnostico = possuiDengue ? "Paciente possui dengue" : "Paciente não possui dengue";
+        String diagnostico = possuiDengue ? "Paciente possui dengue \n Paracetamol ou Dipirona \n 3 Dias de Repouso" : "Paciente não possui dengue";
 
         new AlertDialog.Builder(this)
                 .setTitle("Diagnóstico")

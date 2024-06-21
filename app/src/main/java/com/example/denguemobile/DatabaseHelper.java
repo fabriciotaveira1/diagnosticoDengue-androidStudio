@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "dengueMobile.db";
+    private static final String DATABASE_NAME = "dengueMobile2.db";
     private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_PACIENTES = "pacientes";
@@ -84,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private boolean possuiSintomasDeDengue(String sintomas) {
         // Lista de sintomas que indicam dengue
-        String[] sintomasDengue = {"febre", "dor de cabeça", "dor nas articulações", "náusea", "vômito"};
+        String[] sintomasDengue = {"febre", "dor de cabeça", "dor nas articulações", "náusea", "vômito", "dor atrás dos olhos", "fadiga"};
 
         int count = 0;
         for (String sintoma : sintomasDengue) {
